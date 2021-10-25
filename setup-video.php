@@ -1,7 +1,7 @@
 <?php
 /**
- * Plugin Name: URC Video
- * Description: Utilize ACF's custom fields to handle URC'S videos.
+ * Plugin Name: Setup Video 2.0
+ * Description: Utilize ACF's custom fields to handle videos.
  * Version: 1.0
  * Author: Jake Almeda
  * Author URI: http://smarterwebpackages.com/
@@ -26,6 +26,17 @@ class SetupVideoStructure {
         );
 
     }
+
+    // array of Youtube URLs
+    public $domain_yt = array(
+        'www.youtube.com',
+        'youtu.be',
+    );
+
+    // array of Vimeo URLs
+    public $domain_vimeo = array(
+        'vimeo.com',
+    );
 
     // default video provider
     /*public function videodefault() {
@@ -108,11 +119,11 @@ class SetupVideojQuery {
 
 
 // INCLUDE FUNCTION FILE
-include_once( 'lib/urc-video-acf.php' );
-include_once( 'lib/urc-video-function.php' );
+include_once( 'lib/setup-video-acf.php' );
+include_once( 'lib/setup-video-function.php' );
 
 
 // INITIATE CLASS
-$xox = new URCVideoACF();
-$sos = new URCVideoFunc();
+$xox = new SetupVideoACF();
+$sos = new SetupVideoFunc();
 $oxo = new SetupVideojQuery();

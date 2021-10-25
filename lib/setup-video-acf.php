@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 
-class URCVideoACF extends SetupVideoStructure {
+class SetupVideoACF extends SetupVideoStructure {
 
 
     /**

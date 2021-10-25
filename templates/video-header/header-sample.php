@@ -1,12 +1,12 @@
 <?php
 
 global $vars;
-$arr = new URCVideoFunc();
+$arr = new SetupVideoFunc();
 
 // CONTAINER (WRAP) | CSS
-$cont_class = $arr->urc_array_validation( 'video_wrap_sel', $vars, array( 'attr' => 'selectors' ) );
+$cont_class = $arr->setup_array_validation( 'video_wrap_sel', $vars, array( 'attr' => 'selectors' ) );
 // CONTAINER (WRAP) | INLINE STYLE
-$cont_style = $arr->urc_array_validation( 'video_wrap_sty', $vars, array( 'attr' => 'inline' ) );
+$cont_style = $arr->setup_array_validation( 'video_wrap_sty', $vars, array( 'attr' => 'inline' ) );
 
 /**
  * CONTENT | START
@@ -25,12 +25,12 @@ echo '<div class="item-video'.$cont_class.'"'.$inline_style.'>';
 
 	echo '<h1 style="color:gold;">HEADER SAMPLE</h1>';
 
-	$title = $arr->urc_array_validation( 'title', $vars );
+	$title = $arr->setup_array_validation( 'title', $vars );
 	if( !empty( $title ) ) :
 		echo '<div class="item-title">'.$title.'</div>';
 	endif;
 
-	$content = $arr->urc_array_validation( 'content', $vars );
+	$content = $arr->setup_array_validation( 'content', $vars );
 	if( !empty( $content ) ) :
 		echo '<div class="item-content">'.$content.'</div>';
 	endif;

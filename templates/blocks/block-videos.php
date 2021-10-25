@@ -1,4 +1,4 @@
 <?php
-$clazz = new URCVideoFunc();
-echo $clazz->urc_video_acf( "-block" );
+$clazz = new SetupVideoFunc();
+echo $clazz->setup_video_acf( "-block" );
 // EOF

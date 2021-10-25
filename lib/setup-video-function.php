@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 
-class URCVideoFunc {
+class SetupVideoFunc {
 
     // intialize counter for sections
     public $vid_counter = 0;
@@ -14,21 +14,10 @@ class URCVideoFunc {
     // input type text | change to show or hide
     public $input_type = 'hidden'; // either TEXT or HIDDEN
 
-    // array of Youtube URLs
-    public $domain_yt = array(
-        'www.youtube.com',
-        'youtu.be',
-    );
-
-    // array of Vimeo URLs
-    public $domain_vimeo = array(
-        'vimeo.com',
-    );
-
     /**
      * Main function
      */
-    public function urc_video_acf( $acf_group = FALSE ) {
+    public function setup_video_acf( $acf_group = FALSE ) {
         
         // declare empty variables
         $outz = '';
@@ -49,7 +38,7 @@ class URCVideoFunc {
                 global $vars;
 
                 $vid_dimensions = new SetupVideoStructure();
-                $vid_dies = $vid_dimensions->setup_video_size();
+                $vid_details = $vid_dimensions->setup_video_size();
 
                 // VIDEO COUNTER
                 $this->vid_counter++;
@@ -68,21 +57,21 @@ class URCVideoFunc {
                 // VIDEO URL
                 $vurl = $vid_det[ 'video-url' ];
                 if( !empty( $vurl ) ) {
-                    $vars[ 'video_url' ] = $this->urc_embed_sc( '[embed width="'.$vid_dies[ "width" ].'" height="'.$vid_dies[ "height" ].'"]'.$vurl.'[/embed]' );
+                    $vars[ 'video_url' ] = $this->setup_embed_sc( '[embed width="'.$vid_details[ "width" ].'" height="'.$vid_details[ "height" ].'"]'.$vurl.'[/embed]' );
                     //$vars[ 'video_url_raw' ] = $vurl;
 
                     $p_url = parse_url( $vurl );
                     if( array_key_exists( 'host', $p_url ) && !empty( $p_url[ 'host' ] ) ) {
 
                         // YOUTUBE
-                        if( in_array( $p_url[ 'host' ], $this->domain_yt ) ) :
+                        if( in_array( $p_url[ 'host' ], $vid_dimensions->domain_yt ) ) :
 
                             $vtyp = 'yt';
                             $v_id = $this->setup_youtube_id_regex( $vurl );
 
                         endif;
 
-                        if( in_array( $p_url[ 'host' ], $this->domain_vimeo ) ) :
+                        if( in_array( $p_url[ 'host' ], $vid_dimensions->domain_vimeo ) ) :
 
                             $vtyp = 'vi';
                             $v_id = (int) substr( parse_url( $vurl, PHP_URL_PATH ), 1 );
@@ -226,9 +215,9 @@ class URCVideoFunc {
         if( is_array( $section_style ) ) {
 
             // CONTAINER (WRAP) | CSS
-            $sec_css = $this->urc_array_validation( 'css', $section_style, array( 'attr' => 'selectors' ) );
+            $sec_css = $this->setup_array_validation( 'css', $section_style, array( 'attr' => 'selectors' ) );
             // CONTAINER (WRAP) | INLINE STYLE
-            $sec_style = $this->urc_array_validation( 'inline', $section_style, array( 'attr' => 'inline' ) );
+            $sec_style = $this->setup_array_validation( 'inline', $section_style, array( 'attr' => 'inline' ) );
             if( !empty( $sec_style ) ) {
                 $sec_style = ' style="'.$sec_style.'"';
             } else {
@@ -264,7 +253,7 @@ class URCVideoFunc {
                     if( $vid_flex[ $x ][ 'vme-showhide' ] === TRUE ) {
 
                         $vid_dimensions = new SetupVideoStructure();
-                        $vid_dies = $vid_dimensions->setup_video_size();
+                        $vid_details = $vid_dimensions->setup_video_size();
 
                         // VIDEO COUNTER
                         $this->vid_counter++;
@@ -283,21 +272,21 @@ class URCVideoFunc {
                         // VIDEO URL
                         $vurl = $vid_flex[ $x ][ 'vme-url' ];
                         if( !empty( $vurl ) ) {
-                            $vars[ 'video_url' ] = $this->urc_embed_sc( '[embed width="'.$vid_dies[ "width" ].'" height="'.$vid_dies[ "height" ].'"]'.$vurl.'[/embed]' );
+                            $vars[ 'video_url' ] = $this->setup_embed_sc( '[embed width="'.$vid_details[ "width" ].'" height="'.$vid_details[ "height" ].'"]'.$vurl.'[/embed]' );
                             //$vars[ 'video_url_raw' ] = $vurl;
 
                             $p_url = parse_url( $vurl );
                             if( array_key_exists( 'host', $p_url ) && !empty( $p_url[ 'host' ] ) ) {
 
                                 // YOUTUBE
-                                if( in_array( $p_url[ 'host' ], $this->domain_yt ) ) :
+                                if( in_array( $p_url[ 'host' ], $vid_dimensions->domain_yt ) ) :
 
                                     $vtyp = 'yt';
                                     $v_id = $this->setup_youtube_id_regex( $vurl );
 
                                 endif;
 
-                                if( in_array( $p_url[ 'host' ], $this->domain_vimeo ) ) :
+                                if( in_array( $p_url[ 'host' ], $vid_dimensions->domain_vimeo) ) :
 
                                     $vtyp = 'vi';
                                     $v_id = (int) substr( parse_url( $vurl, PHP_URL_PATH ), 1 );
@@ -516,7 +505,7 @@ class URCVideoFunc {
     /**
      * WP Native Global Embed code
      */
-    private function urc_embed_sc( $vid ) {
+    private function setup_embed_sc( $vid ) {
 
     	return $GLOBALS[ 'wp_embed' ]->run_shortcode( $vid );
 
@@ -526,7 +515,7 @@ class URCVideoFunc {
     /**
      * Array validation
      */
-    public function urc_array_validation( $needles, $haystacks, $args = FALSE ) {
+    public function setup_array_validation( $needles, $haystacks, $args = FALSE ) {
 
         if( is_array( $haystacks ) && array_key_exists( $needles, $haystacks ) && !empty( $haystacks[ $needles ] ) ) {
 
@@ -559,27 +548,30 @@ class URCVideoFunc {
      * Filter YouTube ID
      */
     public function setup_youtube_id_regex( $url ) {
-        //function getYoutubeIdFromUrl($url) {
-            $parts = parse_url($url);
-            if(isset($parts['query'])){
-                parse_str($parts['query'], $qs);
-                if(isset($qs['v'])){
-                    return $qs['v'];
-                }else if(isset($qs['vi'])){
-                    return $qs['vi'];
-                }
+
+        $parts = parse_url($url);
+
+        if( isset( $parts[ 'query' ] ) ){
+
+            parse_str( $parts[ 'query' ], $qs );
+
+            if( isset( $qs[ 'v' ] ) ){
+                return $qs[ 'v' ];
+            } elseif( isset( $qs[ 'vi' ] ) ){
+                return $qs[ 'vi' ];
             }
-            if(isset($parts['path'])){
-                $path = explode('/', trim($parts['path'], '/'));
-                return $path[count($path)-1];
-            }
-            return false;
-        //}
-/*        //$url = "http://www.youtube.com/watch?v=C4kxS1ksqtw&feature=relate";
-        parse_str( parse_url( $url, PHP_URL_QUERY ), $my_array_of_vars );
-        var_dump( $my_array_of_vars );
-        return $my_array_of_vars['v'];    
-*/
+
+        }
+
+        if( isset( $parts[ 'path' ] ) ){
+
+            $path = explode( '/', trim( $parts[ 'path' ], '/' ) );
+            return $path[ count( $path ) - 1 ];
+
+        }
+
+        return false;
+        
     }
 
     
@@ -590,7 +582,7 @@ class URCVideoFunc {
 
         if ( !is_admin() ) {
 
-            add_action( 'genesis_entry_content', array( $this, 'urc_video_acf' ) );
+            add_action( 'genesis_entry_content', array( $this, 'setup_video_acf' ) );
 
         }
 
