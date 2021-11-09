@@ -20,7 +20,7 @@
 		    //$( this ).hide();
 
 		    // append YOUTUBE video
-		    if( VideoSource == 'yt' ) {
+		    if( VideoSource == 'youtube' ) {
 
 		    	// cancatenate here - doing so in the append command below creates an error on the console
 		    	var ActualVideoURL = 'https://www.youtube.com/embed/' + VideoID + '?autoplay=1';
@@ -34,7 +34,7 @@
 		    }
 
 		    // append VIMEO video
-		    if( VideoSource == 'vi' ) {
+		    if( VideoSource == 'vimeo' ) {
 
 		    	// cancatenate here - doing so in the append command below creates an error on the console
 		    	var ActualVideoURL = 'https://player.vimeo.com/video/' + VideoID + '?autoplay=1&portrait=0';

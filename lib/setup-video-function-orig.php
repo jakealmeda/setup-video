@@ -22,16 +22,8 @@ class SetupVideoFunc {
      */
     public function setup_video_acf( $acf_group = FALSE ) {
 
-        $vid_struc = new SetupVideoStructure();
-
         // declare empty variables
-        if( is_array( $vid_struc->type_of_vids ) ) {
-            $outz = array();
-        } else {
-            $outz = '';    
-        }
-        $video_count = 0;
-        $out_this = '';
+        $outz = '';
         $section_style = '';
 
         // 1st group
@@ -40,7 +32,7 @@ class SetupVideoFunc {
         $vid_multi = get_field( 'video-multi'.$acf_group );
 
         // VALIDATE IF VIDEOS ARE TO BE DISPLAYED
-        if( $vid_det[ 'video-status' ] == 'enabled' && $vid_struc->show_num_vids >= 1 ) {
+        if( $vid_det[ 'video-status' ] == 'enabled' ) {
 
             // GET GLOBAL LAYOUT (TEMPLATE)
             $layout_global = $this->setup_array_validation( 'video-template-global', $vid_det );
@@ -71,46 +63,15 @@ class SetupVideoFunc {
 
                 );
 
-                $thiz = $this->setup_process_video_entry( $args );
-                if( is_array( $vid_struc->type_of_vids ) ) {
-                    
-                    // check if video type is in the array of what to be shown
-                    if( in_array( $thiz[ 'type' ], $vid_struc->type_of_vids ) ) {
-                        $outz[] = array( $thiz[ 'type' ] => $thiz[ 'output' ] );
-                    }
-
-                } else {
-                    
-                    // DEFAULT
-                    $outz .= $this->setup_array_validation( 'output', $thiz );
-
-                }
-
-                if( !empty( $outz ) ) {
-                    $video_count++;
-                }
+                $outz .= $this->setup_process_video_entry( $args );
 
             } // MAIN VIDEO - END
-
-
-            // PIT STOP - check the number of videos to be shown
-            if( $vid_struc->show_num_vids == $video_count ) {
-                
-                // $outz has the main video | stop the video multi loop
-                $end_loop = 1;
-
-            } else {
-                
-                // continue with the video multi loop
-                $end_loop = 2;
-
-            }
 
 
             /**
              * MULTI VIDEO
              */
-            if( is_array( $vid_multi ) && $end_loop == 2 ) {
+            if( is_array( $vid_multi ) ) {
 
                 for( $x=0; $x<=( count( $vid_multi ) - 1); $x++ ) {
 
@@ -120,50 +81,7 @@ class SetupVideoFunc {
                     // get the type of Flexible Content
                     $vm_layout = $vid_multies[ 'acf_fc_layout' ];
 
-                    // VIDEO HEADER
-                    if( $vm_layout == 'video-multi-heading' ) :
-
-                        if( $vid_multies[ 'vmh-showhide' ] === TRUE ) {
-
-                            $args = array(
-
-                                'title'                 => $this->setup_array_validation( 'vmh-title', $vid_multies ),
-                                'content'               => $this->setup_array_validation( 'vmh-content', $vid_multies ),
-
-                                // section style
-                                'sec_class'             => $this->setup_array_validation( 'vmh-section-class', $this->setup_array_validation( 'vmh-section-wrap', $vid_multies ) ),
-                                'sec_inline'            => $this->setup_array_validation( 'vmh-section-style', $this->setup_array_validation( 'vmh-section-wrap', $vid_multies ) ),
-
-                                // layout (template)
-                                'layout_override'       => TRUE,
-                                'layout'                => $this->setup_array_validation( 'vmh-template', $vid_multies ),
-                                'layout_location'       => 'video-header', // directory inside the templates folder
-
-                            );
-
-                            $thiz = $this->setup_process_video_entry( $args );
-                            if( is_array( $vid_struc->type_of_vids ) ) {
-                                
-                                if( in_array( 'header', $vid_struc->type_of_vids ) ) {
-                                    $outz[] = array( 'header' => $this->setup_array_validation( 'output', $this->setup_process_video_entry( $args ) ) );
-                                }
-
-                            } else {
-                                
-                                // DEFAULT
-                                $outz .= $this->setup_array_validation( 'output', $this->setup_process_video_entry( $args ) );
-
-                            }
-
-                            if( !empty( $outz ) ) {
-                                $video_count++;
-                            }
-
-                        }
-
-                    endif;
-
-                    // VIDEO ENTRY
+                    // video entry
                     if( $vm_layout == 'video-multi-entry' ) :
 
                         if( $vid_multies[ 'vme-showhide' ] === TRUE ) {
@@ -189,63 +107,43 @@ class SetupVideoFunc {
 
                             );
 
-                            $thiz = $this->setup_process_video_entry( $args );
-                            if( is_array( $vid_struc->type_of_vids ) ) {
-                                
-                                if( in_array( $thiz[ 'type' ], $vid_struc->type_of_vids ) ) {
-                                    $outz[] = array( $thiz[ 'type' ] => $thiz[ 'output' ] );
-                                }
-
-                            } else {
-                                
-                                // DEFAULT
-                                $outz .= $this->setup_array_validation( 'output', $thiz );
-
-                            }
-
-                            if( !empty( $outz ) ) {
-                                $video_count++;
-                            }
+                            $outz .= $this->setup_process_video_entry( $args );
 
                         }
 
                     endif;
 
-                    // PIT STOP - check the number of videos to be shown
-                    if( $vid_struc->show_num_vids == $video_count ) {
-                        break; // exit loop - we got what we need
-                    }
+                    // video header
+                    if( $vm_layout == 'video-multi-heading' ) :
+
+                        if( $vid_multies[ 'vmh-showhide' ] === TRUE ) {
+
+                            $args = array(
+
+                                'title'                 => $this->setup_array_validation( 'vmh-title', $vid_multies ),
+                                'content'               => $this->setup_array_validation( 'vmh-content', $vid_multies ),
+
+                                // section style
+                                'sec_class'             => $this->setup_array_validation( 'vmh-section-class', $this->setup_array_validation( 'vmh-section-wrap', $vid_multies ) ),
+                                'sec_inline'            => $this->setup_array_validation( 'vmh-section-style', $this->setup_array_validation( 'vmh-section-wrap', $vid_multies ) ),
+
+                                // layout (template)
+                                'layout_override'       => TRUE,
+                                'layout'                => $this->setup_array_validation( 'vmh-template', $vid_multies ),
+                                'layout_location'       => 'video-header', // directory inside the templates folder
+
+                            );
+                            
+                            $outz .= $this->setup_process_video_entry( $args );
+
+                        }
+
+                    endif;                    
 
                 } // for( $x=0; $x<=( count( $vid_multi ) - 1); $x++ ) {
 
             } // MULTI VIDEO - END
             
-
-            // SORT ARRAY BASED ON $vid_struc->type_of_vids
-            if( is_array( $vid_struc->type_of_vids ) && !empty( $outz ) ) :
-
-                foreach( $vid_struc->type_of_vids as $vtvids ) {
-                    
-                    for( $h=0; $h<=( count( $outz ) - 1); $h++ ) {
-
-                        foreach( $outz[ $h ] as $ke => $va ) {
-                            
-                            if( $vtvids == $ke ) {
-                                $out_this .= $va;
-                            }
-
-                        }
-
-                    }
-
-                }
-
-            else :
-
-                $out_this = $outz;
-
-            endif;
-
             
             /**
              * DISPLAY
@@ -266,14 +164,12 @@ class SetupVideoFunc {
                     $sec_style = '';
                 }
 
-                echo '<section class="section-video'.$sec_css.'"'.$sec_style.'>'.$out_this.'</section>';
+                echo '<section class="section-video'.$sec_css.'"'.$sec_style.'>'.$outz.'</section>';
 
             else:
 
                 // NO CONTAINER
-                //var_dump( $out_this );
-                if( !empty( $outz ) )
-                    echo $out_this;
+                echo $outz;
 
             endif;
 
@@ -447,11 +343,7 @@ class SetupVideoFunc {
             }
         }
         
-        // return type of video and output
-        return array(
-            'type'      => $vtyp,
-            'output'    => $outz,
-        );
+        return $outz;
 
     }
 

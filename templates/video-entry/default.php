@@ -34,7 +34,6 @@ echo '<div class="item-video'.$cont_class.'"'.$inline_style.'>';
 		if( !empty( $thumbnail ) ) :
 
 			echo '<div class="item-thumbnail" id="vthumbs__'.$vars[ 'counts' ].'">'.$thumbnail.'</div>';
-			//echo '<input type="text" id="vlink__'.$vars[ 'counts' ].'" value="'.$vars[ "video_url_raw" ].'" />';
 
 		endif;
 

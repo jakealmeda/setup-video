@@ -17,6 +17,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 // GLOBAL VIDEO HIERARCHY
 class SetupVideoStructure {
 
+    public $usehook = 'genesis_entry_content';
+
+    public $show_num_vids = 100; // number of videos to show
+
+    // control what videos to show
+    public $type_of_vids = 'default'; // show videos based on each entry's arrangement
+//    public $type_of_vids = array( 'youtube', 'header' );
+//    public $type_of_vids = array( 'vimeo' );
+//    public $type_of_vids = array( 'vimeo', 'youtube' );
+//    public $type_of_vids = array( 'youtube', 'vimeo', 'rumble' );
+
     // default video dimensions
     public function setup_video_size() {
 
@@ -37,24 +48,6 @@ class SetupVideoStructure {
     public $domain_vimeo = array(
         'vimeo.com',
     );
-
-    // default video provider
-    /*public function videodefault() {
-
-        return 'youtube';
-
-    }*/
-
-    // default video provider hierarchy
-    /*public function videostructure() {
-
-        return array(
-            'youtube',
-            'vimeo',
-            'rumble',
-        );
-
-    }*/
 
     // simply return this plugin's main directory
     public function setup_plugin_dir_path() {
