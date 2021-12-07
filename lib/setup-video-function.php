@@ -14,9 +14,6 @@ class SetupVideoFunc {
     // initialize counter for max video count to be shown
     public $video_count = 0;
 
-    // input type text | change to show or hide
-    public $input_type = 'hidden'; // either TEXT or HIDDEN
-
     /**
      * Main function
      */
@@ -290,10 +287,11 @@ class SetupVideoFunc {
 
         $vid_dimensions = new SetupVideoStructure();
         $vid_details = $vid_dimensions->setup_video_size();
+        $vid_details_rumble = $vid_dimensions->setup_rumble_video_size();
 
         // VIDEO COUNTER
         $this->div_counter++;
-        $vars[ 'counts' ] = $this->div_counter;
+        $vars[ 'counts' ] = $this->div_counter; // templates use this variable
 
         // VIDEO TITLE
         $vtitle = $this->setup_array_validation( 'title', $args );
@@ -332,11 +330,39 @@ class SetupVideoFunc {
 
                 endif;
 
-                if( in_array( $p_url[ 'host' ], $vid_dimensions->domain_vimeo) ) :
+                if( in_array( $p_url[ 'host' ], $vid_dimensions->domain_vimeo ) ) :
 
                     $vtyp = 'vimeo';
                     $v_id = (int) substr( parse_url( $vurl, PHP_URL_PATH ), 1 );
 
+                endif;
+
+                if( in_array( $p_url[ 'host' ], $vid_dimensions->domain_rumble ) ) :
+
+                    $par_url = explode( '/', $p_url[ 'path' ] );
+
+                    $vtyp = 'rumble';
+                    $v_id = $par_url[ 2 ];
+
+                    $vars[ 'video_url' ] = '<iframe class="rumble" width="'.$vid_details_rumble[ "width" ].'" height="'.$vid_details_rumble[ "height" ].'" src="'.$vurl.'" frameborder="0" allowfullscreen></iframe>';
+                    /*
+                        sample
+                        <iframe class="rumble" width="640" height="360" src="https://rumble.com/embed/vnckqr/?pub=4" frameborder="0" allowfullscreen></iframe>
+                        https://rumble.com/embed/vnckqr/?pub=4
+                        
+                        -------
+                        
+                        - IFRAME -
+                        <iframe class="rumble" width="640" height="360" src="https://rumble.com/embed/vn7ykt/?pub=4" frameborder="0" allowfullscreen></iframe>
+                        - VIDEO URL -
+                        https://rumble.com/embed/vn7ykt/?pub=4
+
+                        - JS EMBED -
+                        <script>!function(r,u,m,b,l,e){r._Rumble=b,r[b]||(r[b]=function(){(r[b]._=r[b]._||[]).push(arguments);if(r[b]._.length==1){l=u.createElement(m),e=u.getElementsByTagName(m)[0],l.async=1,l.src="https://rumble.com/embedJS/u4"+(arguments[1].video?'.'+arguments[1].video:'')+"/?url="+encodeURIComponent(location.href)+"&args="+encodeURIComponent(JSON.stringify([].slice.apply(arguments))),e.parentNode.insertBefore(l,e)}})}(window, document, "script", "Rumble");</script>
+                        <div id="rumble_vn7ykt"></div>
+                        <script>
+                        Rumble("play", {"video":"vn7ykt","div":"rumble_vn7ykt"});</script>
+                    */
                 endif;
 
             }
@@ -377,7 +403,7 @@ class SetupVideoFunc {
             $display = 1; // variable to check if something's for display
         } else {
 
-            // GET ACTUAL YOUTUBE/VIMEO THUMBNAIL
+            // GET YOUTUBE/VIMEO/RUMBLE THUMBNAIL
             if( !empty( $vurl ) ) {
 
                 // YOUTUBE
@@ -442,8 +468,8 @@ class SetupVideoFunc {
             // include the raw video url for jQuery
             if( !empty( $vurl ) ) {
                 //$outz .= '<input type="'.$this->input_type.'" id="vlink__'.$this->div_counter.'" value="'.$vurl.'" />';
-                $outz .= '<input type="'.$this->input_type.'" id="vtype__'.$this->div_counter.'" value="'.$vtyp.'" />';
-                $outz .= '<input type="'.$this->input_type.'" id="vidid__'.$this->div_counter.'" value="'.$v_id.'" />';
+                $outz .= '<input type="'.$vid_dimensions->input_type.'" id="vtype__'.$this->div_counter.'" value="'.$vtyp.'" />';
+                $outz .= '<input type="'.$vid_dimensions->input_type.'" id="vidid__'.$this->div_counter.'" value="'.$v_id.'" />';
             }
         }
         

@@ -1,7 +1,7 @@
 [
     {
         "key": "group_6157b964e64ec",
-        "title": "Video",
+        "title": "Video-2",
         "fields": [
             {
                 "key": "field_6159bf3a5ac8d",
@@ -201,7 +201,8 @@
                             "medium_large": "medium_large",
                             "large": "large",
                             "1536x1536": "1536x1536",
-                            "2048x2048": "2048x2048"
+                            "2048x2048": "2048x2048",
+                            "feature-icon": "feature-icon"
                         },
                         "default_value": "medium",
                         "allow_null": 0,
@@ -242,6 +243,7 @@
                         },
                         "choices": {
                             "default.php": "default",
+                            "rumble.php": "rumble",
                             "sub-video-extra.php": "sub-video-extra",
                             "sub-video.php": "sub-video"
                         },
@@ -295,6 +297,7 @@
                         },
                         "choices": {
                             "default.php": "default",
+                            "rumble.php": "rumble",
                             "sub-video-extra.php": "sub-video-extra",
                             "sub-video.php": "sub-video"
                         },
@@ -693,7 +696,8 @@
                                     "medium_large": "medium_large",
                                     "large": "large",
                                     "1536x1536": "1536x1536",
-                                    "2048x2048": "2048x2048"
+                                    "2048x2048": "2048x2048",
+                                    "feature-icon": "feature-icon"
                                 },
                                 "default_value": "medium",
                                 "allow_null": 0,
@@ -761,6 +765,7 @@
                                 },
                                 "choices": {
                                     "default.php": "default",
+                                    "rumble.php": "rumble",
                                     "sub-video-extra.php": "sub-video-extra",
                                     "sub-video.php": "sub-video"
                                 },
@@ -1022,13 +1027,6 @@
                     "operator": "==",
                     "value": "post"
                 }
-            ],
-            [
-                {
-                    "param": "post_type",
-                    "operator": "==",
-                    "value": "video"
-                }
             ]
         ],
         "menu_order": 0,
@@ -1038,11 +1036,12 @@
         "instruction_placement": "label",
         "hide_on_screen": "",
         "active": true,
-        "description": ""
+        "description": "",
+        "show_in_rest": 0
     },
     {
         "key": "group_61684eeae8f84",
-        "title": "Video Block",
+        "title": "Video-2 Block",
         "fields": [
             {
                 "key": "field_61684eeaecd93",
@@ -1242,7 +1241,8 @@
                             "medium_large": "medium_large",
                             "large": "large",
                             "1536x1536": "1536x1536",
-                            "2048x2048": "2048x2048"
+                            "2048x2048": "2048x2048",
+                            "feature-icon": "feature-icon"
                         },
                         "default_value": "medium",
                         "allow_null": 0,
@@ -1283,6 +1283,7 @@
                         },
                         "choices": {
                             "default.php": "default",
+                            "rumble.php": "rumble",
                             "sub-video-extra.php": "sub-video-extra",
                             "sub-video.php": "sub-video"
                         },
@@ -1336,6 +1337,7 @@
                         },
                         "choices": {
                             "default.php": "default",
+                            "rumble.php": "rumble",
                             "sub-video-extra.php": "sub-video-extra",
                             "sub-video.php": "sub-video"
                         },
@@ -1734,7 +1736,8 @@
                                     "medium_large": "medium_large",
                                     "large": "large",
                                     "1536x1536": "1536x1536",
-                                    "2048x2048": "2048x2048"
+                                    "2048x2048": "2048x2048",
+                                    "feature-icon": "feature-icon"
                                 },
                                 "default_value": "medium",
                                 "allow_null": 0,
@@ -1802,6 +1805,7 @@
                                 },
                                 "choices": {
                                     "default.php": "default",
+                                    "rumble.php": "rumble",
                                     "sub-video-extra.php": "sub-video-extra",
                                     "sub-video.php": "sub-video"
                                 },
@@ -2072,6 +2076,7 @@
         "instruction_placement": "label",
         "hide_on_screen": "",
         "active": true,
-        "description": ""
+        "description": "",
+        "show_in_rest": 0
     }
 ]

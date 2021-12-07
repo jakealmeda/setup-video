@@ -28,12 +28,22 @@ class SetupVideoStructure {
 //    public $type_of_vids = array( 'vimeo', 'youtube' );
 //    public $type_of_vids = array( 'youtube', 'vimeo', 'rumble' );
 
-    // default video dimensions
+    // default video dimensions | Youtube & Vimeo
     public function setup_video_size() {
 
         return $sizes = array(
             'width'     =>  '560',
             'height'    =>  '315',
+        );
+
+    }
+
+    // default video dimensions | Rumble
+    public function setup_rumble_video_size() {
+
+        return $sizes = array(
+            'width'     =>  '640',
+            'height'    =>  '360',
         );
 
     }
@@ -48,6 +58,14 @@ class SetupVideoStructure {
     public $domain_vimeo = array(
         'vimeo.com',
     );
+
+    // array of Rumble URLs
+    public $domain_rumble = array(
+        'rumble.com',
+    );
+
+    // input type text | change to show or hide for each video
+    public $input_type = 'hidden'; // either TEXT or HIDDEN
 
     // simply return this plugin's main directory
     public function setup_plugin_dir_path() {
