@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Setup Video 2.0
  * Description: Utilize ACF's custom fields to handle videos.
- * Version: 1.0
+ * Version: 2.0
  * Author: Jake Almeda
  * Author URI: http://smarterwebpackages.com/
  * Network: true
@@ -16,6 +16,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // GLOBAL VIDEO HIERARCHY
 class SetupVideoStructure {
+
+    public $contet_wrapper = 'div';
 
     public $usehook = 'genesis_entry_content';
 

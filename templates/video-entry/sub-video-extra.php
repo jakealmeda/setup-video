@@ -25,7 +25,7 @@ echo '<div class="item-video'.$cont_class.'"'.$inline_style.'>';
 
 	echo '<h1 style="color:orange;">SUB-VIDEO-EXTRA TEMPLATE '.$vars[ 'counts' ].'</h1>';
 
-	$video_url = $arr->setup_array_validation( 'video_url', $vars );
+	/*$video_url = $arr->setup_array_validation( 'video_url', $vars );
 	if( !empty( $video_url ) ) :
 		//echo '<div class="item-video-url">'.$video_url.'</div>';
 
@@ -38,7 +38,11 @@ echo '<div class="item-video'.$cont_class.'"'.$inline_style.'>';
 
 		endif;
 
-	endif;
+	endif;*/
+	$oembed = $arr->setup_array_validation( 'oembed', $vars );
+	if( !empty( $oembed ) ) {
+		echo '<div class="item-oembed">'.$arr->setup_embed_sc( $oembed ).'</div>';
+	}
 
 	$title = $arr->setup_array_validation( 'title', $vars );
 	if( !empty( $title ) ) :

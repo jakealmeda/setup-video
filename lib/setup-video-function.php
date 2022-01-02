@@ -12,274 +12,130 @@ class SetupVideoFunc {
     public $div_counter = 0;
 
     // initialize counter for max video count to be shown
-    public $video_count = 0;
+    //public $video_count = 0;
 
     /**
      * Main function
      */
     public function setup_video_acf( $acf_group = FALSE ) {
 
+        global $vars;
+
         $vid_struc = new SetupVideoStructure();
 
-        // declare empty variables
-        if( is_array( $vid_struc->type_of_vids ) ) {
-            $outz = array();
-        } else {
-            $outz = '';    
-        }
-        $video_count = 0;
-        $out_this = '';
-        $section_style = '';
+        $echo_this = '';
 
-        // 1st group
-        $vid_det = get_field( 'video-main'.$acf_group );
-        // 2nd group
-        $vid_multi = get_field( 'video-multi'.$acf_group );
+        $global_template = get_field( 'video-template-global' );
+
+        // pull entries
+        $ve = get_field( 'video-entry' );
 
         // VALIDATE IF VIDEOS ARE TO BE DISPLAYED
-        if( $vid_det[ 'video-status' ] == 'enabled' && $vid_struc->show_num_vids >= 1 ) {
+        if( is_array( $ve ) ) {
 
-            // GET GLOBAL LAYOUT (TEMPLATE)
-            $layout_global = $this->setup_array_validation( 'video-template-global', $vid_det );
+            for( $x=0; $x<=( count( $ve ) - 1 ); $x++ ) {
 
-            /**
-             * MAIN VIDEO
-             */
-            if( $vid_det[ 'video-showhide' ] === TRUE ) {
+                $entry = $ve[ $x ]; // assign to a variable to avoid too much brackets
 
-                $args = array(
+                if( count( $entry ) >= 1 && is_array( $entry ) ) {
 
-                    'title'                 => $this->setup_array_validation( 'video-title', $vid_det ),
-                    'url'                   => $this->setup_array_validation( 'video-url', $vid_det ),
-                    'thumb'                 => $this->setup_array_validation( 'video-thumb-image', $vid_det ),
-                    'thumb_size'            => $this->setup_array_validation( 'video-thumb-size', $vid_det ),
-                    'summary'               => $this->setup_array_validation( 'video-summary', $vid_det ),
-                    'credits'               => $this->setup_array_validation( 'video-credits', $vid_det ),
+                    // check if included
+                    if( $entry[ 'video-exclude' ] === FALSE ) {
 
-                    // section style
-                    'sec_class'             => $this->setup_array_validation( 'video-section-class', $this->setup_array_validation( 'video-section-wrap', $vid_det ) ),
-                    'sec_inline'            => $this->setup_array_validation( 'video-section-style', $this->setup_array_validation( 'video-section-wrap', $vid_det ) ),
+                        $out = ''; // declare empty variable for the next loop
 
-                    // layout (template)
-                    'layout_override'       => $this->setup_array_validation( 'video-template-override', $vid_det ),
-                    'layout'                => $this->setup_array_validation( 'video-template', $vid_det ),
-                    'layout_global'         => $layout_global,
-                    'layout_location'       => 'video-entry', // directory inside the templates folder
+                        // template
+                        $template_override = $entry[ 'video-template-override' ];
+                        if( $template_override === TRUE ) {
+                            $use_temp = $entry[ 'video-template' ];
+                        } else {
+                            $use_temp = $global_template;
+                        }
 
-                );
+                        // class
+                        $template_class = $entry[ 'video-section-class' ];
+                        if( empty( $template_class ) ) {
+                            $vars[ 'video_wrap_sel' ] = '';
+                        } else {
+                            $vars[ 'video_wrap_sel' ] = ' class="'.$template_class.'"';
+                        }
 
-                $thiz = $this->setup_process_video_entry( $args );
-                if( is_array( $vid_struc->type_of_vids ) ) {
-                    
-                    // check if video type is in the array of what to be shown
-                    if( in_array( $thiz[ 'type' ], $vid_struc->type_of_vids ) ) {
-                        $outz[] = array( $thiz[ 'type' ] => $thiz[ 'output' ] );
+                        // style
+                        $template_style = $entry[ 'video-section-style' ];
+                        if( empty( $template_style ) ) {
+                            $vars[ 'video_wrap_sty' ] = '';
+                        } else {
+                            $vars[ 'video_wrap_sty' ] = ' style="'.$template_style.'"';
+                        }
+
+                        // entries
+                        foreach( $entry[ 'video-entries' ] as $vid ) {
+                            //var_dump( get_post_meta( $vid ) );
+                            $vars[ 'eid' ] = $vid;
+                            $vars[ 'oembed' ] = get_field( 'video-oembeds', $vid );
+                            $vars[ 'thumbnail' ] = get_field( 'video-thumbnail', $vid );
+                            $vars[ 'video_url' ] = get_field( 'video-url', $vid );
+                            $vars[ 'title' ] = get_field( 'video-title', $vid );
+                            $vars[ 'credits' ] = get_field( 'video-credit', $vid );
+                            $vars[ 'summary' ] = get_field( 'video-summary', $vid );
+
+                            // video counter
+                            $this->div_counter++;
+                            $vars[ 'counts' ] = $this->div_counter; // templates use this variable
+
+                            $out .= $this->setup_pull_view_template( $use_temp, 'video-entry' );
+
+                        }
+
+                        $echo_this .= $out;
+
                     }
 
+                } // if( count( $entry ) >= 1 && is_array( $entry ) ) {
+
+            } // for( $x=0; $x<=( count( $ve ) - 1 ); $x++ ) {
+            
+        } // if( is_array( $ve ) ) {
+
+
+        if( !empty( $echo_this ) ) {
+
+            // WRAPS OR NOT
+            if( get_field( 'video-wrap-enable' ) === TRUE ) {
+
+                //use wraps
+
+                // class
+                $clazz = get_field( 'video-wrap-class' );
+                if( empty( $clazz ) ) {
+                    $cla = '';
                 } else {
-                    
-                    // DEFAULT
-                    $outz .= $this->setup_array_validation( 'output', $thiz );
-
+                    $cla = ' class="'.$clazz.'"';
                 }
 
-                if( !empty( $outz ) ) {
-                    $video_count++;
+                // style
+                $ztyle = get_field( 'video-wrap-style' );
+                if( empty( $ztyle ) ) {
+                    $styl = '';
+                } else {
+                    $styl = ' style="'.$ztyle.'"';
                 }
 
-            } // MAIN VIDEO - END
-
-
-            // PIT STOP - check the number of videos to be shown
-            if( $vid_struc->show_num_vids == $video_count ) {
-                
-                // $outz has the main video | stop the video multi loop
-                $end_loop = 1;
+                echo '<'.$vid_struc->contet_wrapper.$cla.$styl.'>'.$echo_this.'</'.$vid_struc->contet_wrapper.'>';
 
             } else {
-                
-                // continue with the video multi loop
-                $end_loop = 2;
+
+                // no wraps
+                echo $echo_this;
 
             }
 
-
-            /**
-             * MULTI VIDEO
-             */
-            if( is_array( $vid_multi ) && $end_loop == 2 ) {
-
-                for( $x=0; $x<=( count( $vid_multi ) - 1); $x++ ) {
-
-                    // assign value to another variable for ease of use
-                    $vid_multies = $vid_multi[ $x ];
-
-                    // get the type of Flexible Content
-                    $vm_layout = $vid_multies[ 'acf_fc_layout' ];
-
-                    // VIDEO HEADER
-                    if( $vm_layout == 'video-multi-heading' ) :
-
-                        if( $vid_multies[ 'vmh-showhide' ] === TRUE ) {
-
-                            $args = array(
-
-                                'title'                 => $this->setup_array_validation( 'vmh-title', $vid_multies ),
-                                'content'               => $this->setup_array_validation( 'vmh-content', $vid_multies ),
-
-                                // section style
-                                'sec_class'             => $this->setup_array_validation( 'vmh-section-class', $this->setup_array_validation( 'vmh-section-wrap', $vid_multies ) ),
-                                'sec_inline'            => $this->setup_array_validation( 'vmh-section-style', $this->setup_array_validation( 'vmh-section-wrap', $vid_multies ) ),
-
-                                // layout (template)
-                                'layout_override'       => TRUE,
-                                'layout'                => $this->setup_array_validation( 'vmh-template', $vid_multies ),
-                                'layout_location'       => 'video-header', // directory inside the templates folder
-
-                            );
-
-                            $thiz = $this->setup_process_video_entry( $args );
-                            if( is_array( $vid_struc->type_of_vids ) ) {
-                                
-                                if( in_array( 'header', $vid_struc->type_of_vids ) ) {
-                                    $outz[] = array( 'header' => $this->setup_array_validation( 'output', $this->setup_process_video_entry( $args ) ) );
-                                }
-
-                            } else {
-                                
-                                // DEFAULT
-                                $outz .= $this->setup_array_validation( 'output', $this->setup_process_video_entry( $args ) );
-
-                            }
-
-                            if( !empty( $outz ) ) {
-                                $video_count++;
-                            }
-
-                        }
-
-                    endif;
-
-                    // VIDEO ENTRY
-                    if( $vm_layout == 'video-multi-entry' ) :
-
-                        if( $vid_multies[ 'vme-showhide' ] === TRUE ) {
-
-                            $args = array(
-
-                                'title'                 => $this->setup_array_validation( 'vme-title', $vid_multies ),
-                                'url'                   => $this->setup_array_validation( 'vme-url', $vid_multies ),
-                                'thumb'                 => $this->setup_array_validation( 'vme-thumb-image', $vid_multies ),
-                                'thumb_size'            => $this->setup_array_validation( 'vme-thumb-size', $vid_multies ),
-                                'summary'               => $this->setup_array_validation( 'vme-summary', $vid_multies ),
-                                'credits'               => $this->setup_array_validation( 'vme-credits', $vid_multies ),
-
-                                // section style
-                                'sec_class'             => $this->setup_array_validation( 'vme-section-class', $this->setup_array_validation( 'vme-section-wrap', $vid_multies ) ),
-                                'sec_inline'            => $this->setup_array_validation( 'vme-section-style', $this->setup_array_validation( 'vme-section-wrap', $vid_multies ) ),
-
-                                // layout (template)
-                                'layout_override'       => $this->setup_array_validation( 'vme-template-override', $vid_multies ),
-                                'layout'                => $this->setup_array_validation( 'vme-template', $vid_multies ),
-                                'layout_global'         => $layout_global,
-                                'layout_location'       => 'video-entry', // directory inside the templates folder
-
-                            );
-
-                            $thiz = $this->setup_process_video_entry( $args );
-                            if( is_array( $vid_struc->type_of_vids ) ) {
-                                
-                                if( in_array( $thiz[ 'type' ], $vid_struc->type_of_vids ) ) {
-                                    $outz[] = array( $thiz[ 'type' ] => $thiz[ 'output' ] );
-                                }
-
-                            } else {
-                                
-                                // DEFAULT
-                                $outz .= $this->setup_array_validation( 'output', $thiz );
-
-                            }
-
-                            if( !empty( $outz ) ) {
-                                $video_count++;
-                            }
-
-                        }
-
-                    endif;
-
-                    // PIT STOP - check the number of videos to be shown
-                    if( $vid_struc->show_num_vids == $video_count ) {
-                        break; // exit loop - we got what we need
-                    }
-
-                } // for( $x=0; $x<=( count( $vid_multi ) - 1); $x++ ) {
-
-            } // MULTI VIDEO - END
-            
-
-            // SORT ARRAY BASED ON $vid_struc->type_of_vids
-            if( is_array( $vid_struc->type_of_vids ) && !empty( $outz ) ) :
-
-                foreach( $vid_struc->type_of_vids as $vtvids ) {
-                    
-                    for( $h=0; $h<=( count( $outz ) - 1); $h++ ) {
-
-                        foreach( $outz[ $h ] as $ke => $va ) {
-                            
-                            if( $vtvids == $ke ) {
-                                $out_this .= $va;
-                            }
-
-                        }
-
-                    }
-
-                }
-
-            else :
-
-                $out_this = $outz;
-
-            endif;
-
-            
-            /**
-             * DISPLAY
-             */
-            if( $this->setup_array_validation( 'video-container-enable', $vid_det ) === TRUE ) :
-
-                // CONTAINER (WRAP) | CSS
-                //$sec_css = $this->setup_array_validation( 'css', $section_style, array( 'attr' => 'selectors' ) );
-                $sec_css = ' '.$this->setup_array_validation( 'video-container-class', $vid_det );
-
-                // CONTAINER (WRAP) | INLINE STYLE
-                //$sec_style = $this->setup_array_validation( 'inline', $section_style, array( 'attr' => 'inline' ) );
-                $sec_style = $this->setup_array_validation( 'video-container-style', $vid_det );
-
-                if( !empty( $sec_style ) ) {
-                    $sec_style = ' style="'.$sec_style.'"';
-                } else {
-                    $sec_style = '';
-                }
-
-                echo '<section class="section-video'.$sec_css.'"'.$sec_style.'>'.$out_this.'</section>';
-
-            else:
-
-                // NO CONTAINER
-                //var_dump( $out_this );
-                if( !empty( $outz ) )
-                    echo $out_this;
-
-            endif;
-
-        } // if( $vid_det[ 'video-showhide' ] === TRUE ) {
+        } // if( !empty( $echo_this ) ) {
 
     }
 
 
-    public function setup_process_video_entry( $args ) {
+    /*public function setup_process_video_entry( $args ) {
 
         global $vars;
 
@@ -345,7 +201,7 @@ class SetupVideoFunc {
                     $v_id = $par_url[ 2 ];
 
                     $vars[ 'video_url' ] = '<iframe class="rumble" width="'.$vid_details_rumble[ "width" ].'" height="'.$vid_details_rumble[ "height" ].'" src="'.$vurl.'" frameborder="0" allowfullscreen></iframe>';
-                    /*
+                    / *
                         sample
                         <iframe class="rumble" width="640" height="360" src="https://rumble.com/embed/vnckqr/?pub=4" frameborder="0" allowfullscreen></iframe>
                         https://rumble.com/embed/vnckqr/?pub=4
@@ -362,7 +218,7 @@ class SetupVideoFunc {
                         <div id="rumble_vn7ykt"></div>
                         <script>
                         Rumble("play", {"video":"vn7ykt","div":"rumble_vn7ykt"});</script>
-                    */
+                    * /
                 endif;
 
             }
@@ -480,7 +336,7 @@ class SetupVideoFunc {
         );
 
     }
-
+    */
 
     /**
      * Get VIEW template | this function is called by SETUP-LOG-FLEX.PHP found in PARTIALS/BLOCKS folder
@@ -589,7 +445,7 @@ class SetupVideoFunc {
     /**
      * Handle the display
      */
-    public function __construct() {
+    /*public function __construct() {
 
         if ( !is_admin() ) {
 
@@ -599,6 +455,6 @@ class SetupVideoFunc {
 
         }
 
-    }
+    }*/
 
 }
