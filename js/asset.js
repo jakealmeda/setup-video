@@ -34,7 +34,7 @@
 		    }
 
 		    // append VIMEO video
-		    if( VideoSource == 'vimeo' ) {
+		    /*if( VideoSource == 'vimeo' ) {
 
 		    	// cancatenate here - doing so in the append command below creates an error on the console
 		    	var ActualVideoURL = 'https://player.vimeo.com/video/' + VideoID + '?autoplay=1&portrait=0';
@@ -45,7 +45,7 @@
 			                 '</div><script src="https://player.vimeo.com/api/player.js"><\/script>' );
 			        
 			    //alert( VideoSource + ' | ' + VideoID );
-		    }
+		    }*/
 		    
 
 		});

@@ -25,37 +25,29 @@ echo '<div class="item-video'.$cont_class.'"'.$inline_style.'>';
 	
 	echo '<h1 style="color:green;">DEFAULT TEMPLATE ('.$vars[ 'counts' ].')</h1>';
 
-	/*$video_url = $arr->setup_array_validation( 'video_url', $vars );
-	if( !empty( $video_url ) ) :
-		//echo '<div class="item-video-url">'.$video_url.'</div>';
-
-		// check thumbnail
+	$oembed = $arr->setup_array_validation( 'oembed', $vars );
+	if( !empty( $oembed ) ) {
+		
 		$thumbnail = $arr->setup_array_validation( 'thumbnail', $vars );
 		if( !empty( $thumbnail ) ) :
-
-			echo '<div class="item-thumbnail" id="vthumbs__'.$vars[ 'counts' ].'">'.$thumbnail.'</div>';
-
+			// who clickable thumbnail
+			echo '<div class="item-thumbnail" id="vthumbs__'.$vars[ 'counts' ].'">'.wp_get_attachment_image( $thumbnail, $arr->setup_array_validation( 'def_thumb_size', $vars ) ).'</div>';
+		else :
+			// show video right away
+			echo '<div class="item-oembed">'.$arr->setup_embed_sc( $oembed ).'</div>';
 		endif;
 
-	endif;*/
-/*
-item-oembed
-item-thumbnail
-item-url
-item-title
-item-credit
-item-summary
-*/
-	//var_dump( get_post_meta( $vars[ 'eid' ], 'oembed', TRUE ) );
-	$oembed = $arr->setup_array_validation( 'oembed', $vars );
+	}
+
+	/*$oembed = $arr->setup_array_validation( 'oembed', $vars );
 	if( !empty( $oembed ) ) {
 		echo '<div class="item-oembed">'.$arr->setup_embed_sc( $oembed ).'</div>';
 	}
 	
-	$video_url = $arr->setup_array_validation( 'video_url', $vars );
-	if( !empty( $video_url ) ) :
-		echo '<div class="item-video-url">'.$video_url.'</div>';
-	endif;
+	$thumbnail = $arr->setup_array_validation( 'thumbnail', $vars );
+	if( !empty( $thumbnail ) ) :
+		echo '<div class="item-thumbnail">'.wp_get_attachment_image( $thumbnail, $arr->setup_array_validation( 'def_thumb_size', $vars ) ).'</div>';
+	endif;*/
 
 	$summary = $arr->setup_array_validation( 'summary', $vars );
 	if( !empty( $summary ) ) :
@@ -67,9 +59,9 @@ item-summary
 		echo '<div class="item-credits">'.$credits.'</div>';
 	endif;
 
-	$thumbnail = $arr->setup_array_validation( 'thumbnail', $vars );
-	if( !empty( $thumbnail ) ) :
-		echo '<div class="item-thumbnail" id="vthumbs_'.$vars[ 'counts' ].'">'.$thumbnail.'</div>';
+	$video_url = $arr->setup_array_validation( 'video_url', $vars );
+	if( !empty( $video_url ) ) :
+		echo '<div class="item-url"><a href="'.$video_url.'" target="_blank">'.$video_url.'</a></div>';
 	endif;
 
 	$title = $arr->setup_array_validation( 'title', $vars );

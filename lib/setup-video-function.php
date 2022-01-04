@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class SetupVideoFunc {
 
     // intialize counter for sections (div)
-    public $div_counter = 0;
+    public $vid_counter = 0;
 
     // initialize counter for max video count to be shown
     //public $video_count = 0;
@@ -25,10 +25,41 @@ class SetupVideoFunc {
 
         $echo_this = '';
 
-        $global_template = get_field( 'video-template-global' );
+        $global_template = get_field( 'video-template-global'.$acf_group );
+
+        // videos are pulled by the Input/Output block
+        if( $acf_group == '-io' ) {
+            
+            $oembeds_io = get_field( 'video-oembeds'.$acf_group );
+            //$oembeds = get_post_meta( $vid, 'video-oembeds', TRUE );
+            if( !empty( $oembeds_io ) ) {
+                $vars[ 'oembed' ] = $oembeds_io;
+                $v_id = $this->setup_youtube_id_regex( $oembeds_io );
+            } else {
+                $vars[ 'oembed' ] = '';
+                $v_id = '';
+            }
+
+            //$vars[ 'eid' ] = get_the_ID();
+            $vars[ 'thumbnail' ] = get_field( 'video-thumbnail'.$acf_group );
+            $vars[ 'video_url' ] = get_field( 'video-url'.$acf_group );
+            $vars[ 'title' ] = get_field( 'video-title'.$acf_group );
+            $vars[ 'credits' ] = get_field( 'video-credit'.$acf_group );
+            $vars[ 'summary' ] = get_field( 'video-summary'.$acf_group );
+
+            // video counter
+            $this->vid_counter++;
+            $vars[ 'counts' ] = $this->vid_counter; // templates use this variable
+
+            $echo_this .= $this->setup_pull_view_template( $global_template, 'video-entry' );
+            $echo_this .= '<input type="'.$vid_struc->input_type.'" id="vtype__'.$this->vid_counter.'" value="youtube" />';
+        //  $outz .= '<input type="'.$this->input_type.'" id="vtype__'.$this->vid_counter.'" value="'.$vtyp.'" />';
+            $echo_this .= '<input type="'.$vid_struc->input_type.'" id="vidid__'.$this->vid_counter.'" value="'.$v_id.'" />';
+
+        }
 
         // pull entries
-        $ve = get_field( 'video-entry' );
+        $ve = get_field( 'video-entry'.$acf_group );
 
         // VALIDATE IF VIDEOS ARE TO BE DISPLAYED
         if( is_array( $ve ) ) {
@@ -40,54 +71,73 @@ class SetupVideoFunc {
                 if( count( $entry ) >= 1 && is_array( $entry ) ) {
 
                     // check if included
-                    if( $entry[ 'video-exclude' ] === FALSE ) {
+                    if( $entry[ 'video-exclude'.$acf_group ] === FALSE ) {
 
                         $out = ''; // declare empty variable for the next loop
 
                         // template
-                        $template_override = $entry[ 'video-template-override' ];
+                        $template_override = $entry[ 'video-template-override'.$acf_group ];
                         if( $template_override === TRUE ) {
-                            $use_temp = $entry[ 'video-template' ];
+                            $use_temp = $entry[ 'video-template'.$acf_group ];
                         } else {
                             $use_temp = $global_template;
                         }
 
                         // class
-                        $template_class = $entry[ 'video-section-class' ];
+                        $template_class = $entry[ 'video-section-class'.$acf_group ];
                         if( empty( $template_class ) ) {
                             $vars[ 'video_wrap_sel' ] = '';
                         } else {
-                            $vars[ 'video_wrap_sel' ] = ' class="'.$template_class.'"';
+                            $vars[ 'video_wrap_sel' ] = ' '.$template_class;
                         }
 
                         // style
-                        $template_style = $entry[ 'video-section-style' ];
+                        $template_style = $entry[ 'video-section-style'.$acf_group ];
                         if( empty( $template_style ) ) {
                             $vars[ 'video_wrap_sty' ] = '';
                         } else {
-                            $vars[ 'video_wrap_sty' ] = ' style="'.$template_style.'"';
+                            $vars[ 'video_wrap_sty' ] = ' '.$template_style;
                         }
+
+                        // get default thumbnail size
+                        $vars[ 'def_thumb_size' ] = $vid_struc->def_thumb_size;
 
                         // entries
-                        foreach( $entry[ 'video-entries' ] as $vid ) {
-                            //var_dump( get_post_meta( $vid ) );
-                            $vars[ 'eid' ] = $vid;
-                            $vars[ 'oembed' ] = get_field( 'video-oembeds', $vid );
-                            $vars[ 'thumbnail' ] = get_field( 'video-thumbnail', $vid );
-                            $vars[ 'video_url' ] = get_field( 'video-url', $vid );
-                            $vars[ 'title' ] = get_field( 'video-title', $vid );
-                            $vars[ 'credits' ] = get_field( 'video-credit', $vid );
-                            $vars[ 'summary' ] = get_field( 'video-summary', $vid );
+                        $video_entries_array = $entry[ 'video-entries'.$acf_group ];
+                        if( is_array( $video_entries_array ) ) {
 
-                            // video counter
-                            $this->div_counter++;
-                            $vars[ 'counts' ] = $this->div_counter; // templates use this variable
+                            foreach( $video_entries_array as $vid ) {
 
-                            $out .= $this->setup_pull_view_template( $use_temp, 'video-entry' );
+                                //$vars[ 'eid' ] = $vid;
+                                $vars[ 'thumbnail' ] = get_field( 'video-thumbnail', $vid );
+                                $vars[ 'video_url' ] = get_field( 'video-url', $vid );
+                                $vars[ 'title' ] = get_field( 'video-title', $vid );
+                                $vars[ 'credits' ] = get_field( 'video-credit', $vid );
+                                $vars[ 'summary' ] = get_field( 'video-summary', $vid );
 
+                                //$oembeds = get_field( 'video-oembeds', $vid );
+                                $oembeds = get_post_meta( $vid, 'video-oembeds', TRUE );
+                                if( !empty( $oembeds ) ) {
+                                    $vars[ 'oembed' ] = $oembeds;
+                                    $v_id = $this->setup_youtube_id_regex( $oembeds );
+                                } else {
+                                    $vars[ 'oembed' ] = '';
+                                    $v_id = '';
+                                }
+                                
+                                // video counter
+                                $this->vid_counter++;
+                                $vars[ 'counts' ] = $this->vid_counter; // templates use this variable
+
+                                $out .= $this->setup_pull_view_template( $use_temp, 'video-entry' );
+                                $out .= '<input type="'.$vid_struc->input_type.'" id="vtype__'.$this->vid_counter.'" value="youtube" />';
+                            //  $outz .= '<input type="'.$this->input_type.'" id="vtype__'.$this->vid_counter.'" value="'.$vtyp.'" />';
+                                $out .= '<input type="'.$vid_struc->input_type.'" id="vidid__'.$this->vid_counter.'" value="'.$v_id.'" />';
+
+                            }
+
+                            $echo_this .= $out;
                         }
-
-                        $echo_this .= $out;
 
                     }
 
@@ -101,12 +151,12 @@ class SetupVideoFunc {
         if( !empty( $echo_this ) ) {
 
             // WRAPS OR NOT
-            if( get_field( 'video-wrap-enable' ) === TRUE ) {
+            if( get_field( 'video-wrap-enable'.$acf_group ) === TRUE ) {
 
                 //use wraps
 
                 // class
-                $clazz = get_field( 'video-wrap-class' );
+                $clazz = get_field( 'video-wrap-class'.$acf_group );
                 if( empty( $clazz ) ) {
                     $cla = '';
                 } else {
@@ -114,7 +164,7 @@ class SetupVideoFunc {
                 }
 
                 // style
-                $ztyle = get_field( 'video-wrap-style' );
+                $ztyle = get_field( 'video-wrap-style'.$acf_group );
                 if( empty( $ztyle ) ) {
                     $styl = '';
                 } else {
@@ -374,7 +424,10 @@ class SetupVideoFunc {
      */
     private function setup_embed_sc( $vid ) {
 
-        return $GLOBALS[ 'wp_embed' ]->run_shortcode( $vid );
+        $main_class = new SetupVideoStructure();
+        $mc = $main_class->setup_video_size();
+
+        return $GLOBALS[ 'wp_embed' ]->run_shortcode( '[embed width="'.$mc[ "width" ].'" height="'.$mc[ "height" ].'"]'.$vid.'[/embed]' );
 
     }
 

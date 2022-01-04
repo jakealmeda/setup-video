@@ -13,7 +13,7 @@ class SetupVideoACF extends SetupVideoStructure {
      * Available Image Sizes
      *
      */
-    function acf_setup_image_sizes( $field ) {
+    /*public function acf_setup_image_sizes( $field ) {
 
         $field['choices'] = array();
 
@@ -23,7 +23,7 @@ class SetupVideoACF extends SetupVideoStructure {
 
         return $field;
 
-    }
+    }*/
 
 
     /**
@@ -70,11 +70,11 @@ class SetupVideoACF extends SetupVideoStructure {
      * Function to pass directory where templates can be found (VIDEO HEADER)
      *
      */
-    public function acf_setup_video_header_template( $field ) {
+    /*public function acf_setup_video_header_template( $field ) {
 
         return $this->acf_setup_load_view_html_template_choices( $field, 'video-header' );
 
-    }
+    }*/
 
 
     /**
@@ -152,6 +152,22 @@ class SetupVideoACF extends SetupVideoStructure {
                 ],
             ),
 
+            'setup_videos_2_inout' => array(
+                'name'                  => 'setup_videos_2_inout',
+                'title'                 => __('Videos 2.0 IO'),
+                'render_template'       => $this->setup_plugin_dir_path().'templates/blocks/block-videos-io.php',
+                'category'              => 'setup',
+                'icon'                  => 'video-alt3',
+                'mode'                  => 'edit',
+                'keywords'              => array( 'video', 'videos' ),
+                'supports'              => [
+                    'align'             => false,
+                    'anchor'            => true,
+                    'customClassName'   => true,
+                    'jsx'               => true,
+                ],
+            ),
+
         );
 
         // Bail out if function doesn’t exist or no blocks available to register.
@@ -173,12 +189,12 @@ class SetupVideoACF extends SetupVideoStructure {
 
         add_filter( 'acf/load_field/name=video-template-global', array( $this, 'acf_setup_video_entry_template' ) );
         add_filter( 'acf/load_field/name=video-template', array( $this, 'acf_setup_video_entry_template' ) );
-        add_filter( 'acf/load_field/name=vme-template', array( $this, 'acf_setup_video_entry_template' ) );
-        add_filter( 'acf/load_field/name=vmh-template', array( $this, 'acf_setup_video_header_template' ) );
+        add_filter( 'acf/load_field/name=video-template-global-io', array( $this, 'acf_setup_video_entry_template' ) );
+        add_filter( 'acf/load_field/name=video-template-io', array( $this, 'acf_setup_video_entry_template' ) );
 
         // thumbnail sizes
-        add_filter( 'acf/load_field/name=video-thumb-size', array( $this, 'acf_setup_image_sizes' ) );
-        add_filter( 'acf/load_field/name=vme-thumb-size', array( $this, 'acf_setup_image_sizes' ) );
+        //add_filter( 'acf/load_field/name=video-thumb-size', array( $this, 'acf_setup_image_sizes' ) );
+        //add_filter( 'acf/load_field/name=vme-thumb-size', array( $this, 'acf_setup_image_sizes' ) );
 
         // blocks
         add_filter( 'block_categories_all', array( $this, 'setup_block_vid_cats' ) );

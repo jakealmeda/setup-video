@@ -23,25 +23,25 @@ if( !empty( $cont_style ) || !empty( $styles ) ) {
 // WRAP | OPEN
 echo '<div class="item-video'.$cont_class.'"'.$inline_style.'>';
 
-	echo '<h1 style="color:orange;">SUB-VIDEO-EXTRA TEMPLATE '.$vars[ 'counts' ].'</h1>';
+	echo '<h1 style="color:orange;">SUB-VIDEO-EXTRA TEMPLATE ('.$vars[ 'counts' ].')</h1>';
 
-	/*$video_url = $arr->setup_array_validation( 'video_url', $vars );
-	if( !empty( $video_url ) ) :
-		//echo '<div class="item-video-url">'.$video_url.'</div>';
-
-		// check thumbnail
-		$thumbnail = $arr->setup_array_validation( 'thumbnail', $vars );
-		if( !empty( $thumbnail ) ) :
-
-			echo '<div class="item-thumbnail" id="vthumbs__'.$vars[ 'counts' ].'">'.$thumbnail.'</div>';
-			//echo '<input type="text" id="vlink__'.$vars[ 'counts' ].'" value="'.$vars[ "video_url_raw" ].'" />';
-
-		endif;
-
-	endif;*/
-	$oembed = $arr->setup_array_validation( 'oembed', $vars );
+	/*$oembed = $arr->setup_array_validation( 'oembed', $vars );
 	if( !empty( $oembed ) ) {
 		echo '<div class="item-oembed">'.$arr->setup_embed_sc( $oembed ).'</div>';
+	}*/
+
+	$oembed = $arr->setup_array_validation( 'oembed', $vars );
+	if( !empty( $oembed ) ) {
+		
+		$thumbnail = $arr->setup_array_validation( 'thumbnail', $vars );
+		if( !empty( $thumbnail ) ) :
+			// who clickable thumbnail
+			echo '<div class="item-thumbnail" id="vthumbs__'.$vars[ 'counts' ].'">'.wp_get_attachment_image( $thumbnail, $arr->setup_array_validation( 'def_thumb_size', $vars ) ).'</div>';
+		else :
+			// show video right away
+			echo '<div class="item-oembed">'.$arr->setup_embed_sc( $oembed ).'</div>';
+		endif;
+
 	}
 
 	$title = $arr->setup_array_validation( 'title', $vars );
@@ -61,7 +61,7 @@ echo '<div class="item-video'.$cont_class.'"'.$inline_style.'>';
 
 	/*$thumbnail = $arr->setup_array_validation( 'thumbnail', $vars );
 	if( !empty( $thumbnail ) ) :
-		echo '<div class="item-thumbnail">'.$thumbnail.'</div>';
+		echo '<div class="item-thumbnail">'.wp_get_attachment_image( $thumbnail, $arr->setup_array_validation( 'def_thumb_size', $vars ) ).'</div>';
 	endif;*/
 
 // WRAP | CLOSE

@@ -21,7 +21,12 @@ class SetupVideoStructure {
 
     public $usehook = 'genesis_entry_content';
 
-    public $show_num_vids = 100; // number of videos to show
+    //public $show_num_vids = 100; // number of videos to show
+
+    // input type text | change to show or hide for each video
+    public $input_type = 'hidden'; // either TEXT or HIDDEN
+
+    public $def_thumb_size = 'full';
 
     // control what videos to show
     public $type_of_vids = 'default'; // show videos based on each entry's arrangement
@@ -34,24 +39,24 @@ class SetupVideoStructure {
     public function setup_video_size() {
 
         return $sizes = array(
-            'width'     =>  '560',
-            'height'    =>  '315',
-        );
-
-    }
-
-    // default video dimensions | Rumble
-    public function setup_rumble_video_size() {
-
-        return $sizes = array(
             'width'     =>  '640',
             'height'    =>  '360',
         );
 
     }
 
+    // default video dimensions | Rumble
+    /*public function setup_rumble_video_size() {
+
+        return $sizes = array(
+            'width'     =>  '640',
+            'height'    =>  '360',
+        );
+
+    }*/
+
     // array of Youtube URLs
-    public $domain_yt = array(
+    /*public $domain_yt = array(
         'www.youtube.com',
         'youtu.be',
     );
@@ -64,10 +69,7 @@ class SetupVideoStructure {
     // array of Rumble URLs
     public $domain_rumble = array(
         'rumble.com',
-    );
-
-    // input type text | change to show or hide for each video
-    public $input_type = 'hidden'; // either TEXT or HIDDEN
+    );*/
 
     // simply return this plugin's main directory
     public function setup_plugin_dir_path() {
@@ -87,11 +89,11 @@ class SetupVideojQuery {
      */
     public function setup_enqueue_scripts() {
 
+        // enqueue styles
+        wp_enqueue_style( 'setup_video_2_0_block_style', plugins_url( 'css/styles.css', __FILE__ ) );
+
         // last arg is true - will be placed before </body>
         wp_register_script( 'setup_video_2_0_scripts', plugins_url( 'js/asset.js', __FILE__ ), NULL, '1.0', TRUE );
-
-        // enqueue styles
-        //wp_enqueue_style( 'setup_video_block_style', plugins_url( 'assets/css/setup-video-block-style.css', __FILE__ ) );
          
         // Localize the script with new data
         /*$args = array(
