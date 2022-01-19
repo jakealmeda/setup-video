@@ -34,14 +34,15 @@ echo '<div class="item-video'.$cont_class.'"'.$inline_style.'>';
 			echo '<div class="item-thumbnail" id="vthumbs__'.$vars[ 'counts' ].'">'.wp_get_attachment_image( $thumbnail, $arr->setup_array_validation( 'def_thumb_size', $vars ) ).'</div>';
 		else :
 			// show video right away
-			echo '<div class="item-oembed">'.$arr->setup_embed_sc( $oembed ).'</div>';
+			echo '<div class="item-oembed">'.$oembed.'</div>';
+			//echo '<div class="item-oembed">'.$arr->setup_embed_sc( $oembed ).'</div>';
 		endif;
 
 	}
-
-	/*$oembed = $arr->setup_array_validation( 'oembed', $vars );
+	/*
+	$oembed = $arr->setup_array_validation( 'oembed', $vars );
 	if( !empty( $oembed ) ) {
-		echo '<div class="item-oembed">'.$arr->setup_embed_sc( $oembed ).'</div>';
+		echo '<div class="item-oembed">'.$oembed.'</div>';
 	}
 	
 	$thumbnail = $arr->setup_array_validation( 'thumbnail', $vars );
@@ -68,6 +69,9 @@ echo '<div class="item-video'.$cont_class.'"'.$inline_style.'>';
 	if( !empty( $title ) ) :
 		echo '<div class="item-title">'.$title.'</div>';
 	endif;
+
+    echo '<input type="'.$arr->setup_array_validation( 'input_type', $vars ).'" id="vtype__'.$vars[ 'counts' ].'" value="youtube" />';
+    echo '<input type="'.$arr->setup_array_validation( 'input_type', $vars ).'" id="vidid__'.$vars[ 'counts' ].'" value="'.$arr->setup_array_validation( 'video_id', $vars ).'" />';
 
 // WRAP | CLOSE
 echo '</div>';

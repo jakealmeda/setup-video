@@ -37,7 +37,7 @@ echo '<div class="item-video'.$cont_class.'"'.$inline_style.'>';
 
 	/*$oembed = $arr->setup_array_validation( 'oembed', $vars );
 	if( !empty( $oembed ) ) {
-		echo '<div class="item-oembed">'.$arr->setup_embed_sc( $oembed ).'</div>';
+		echo '<div class="item-oembed">'.$oembed.'</div>';
 	}*/
 	
 	$oembed = $arr->setup_array_validation( 'oembed', $vars );
@@ -49,7 +49,8 @@ echo '<div class="item-video'.$cont_class.'"'.$inline_style.'>';
 			echo '<div class="item-thumbnail" id="vthumbs__'.$vars[ 'counts' ].'">'.wp_get_attachment_image( $thumbnail, $arr->setup_array_validation( 'def_thumb_size', $vars ) ).'</div>';
 		else :
 			// show video right away
-			echo '<div class="item-oembed">'.$arr->setup_embed_sc( $oembed ).'</div>';
+			echo '<div class="item-oembed">'.$oembed.'</div>';
+			//echo '<div class="item-oembed">'.$arr->setup_embed_sc( $oembed ).'</div>';
 		endif;
 
 	}
@@ -68,6 +69,9 @@ echo '<div class="item-video'.$cont_class.'"'.$inline_style.'>';
 	if( !empty( $credits ) ) :
 		echo '<div class="item-credits">'.$credits.'</div>';
 	endif;
+
+    echo '<input type="'.$arr->setup_array_validation( 'input_type', $vars ).'" id="vtype__'.$vars[ 'counts' ].'" value="youtube" />';
+    echo '<input type="'.$arr->setup_array_validation( 'input_type', $vars ).'" id="vidid__'.$vars[ 'counts' ].'" value="'.$arr->setup_array_validation( 'video_id', $vars ).'" />';
 
 // WRAP | CLOSE
 echo '</div>';

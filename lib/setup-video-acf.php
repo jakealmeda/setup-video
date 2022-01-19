@@ -136,10 +136,10 @@ class SetupVideoACF extends SetupVideoStructure {
 
         $blocks = array(
 
-            'setup_videos_2' => array(
-                'name'                  => 'setup_videos_2',
-                'title'                 => __('Videos 2.0'),
-                'render_template'       => $this->setup_plugin_dir_path().'templates/blocks/block-videos.php',
+            'setup_videos_2_single' => array(
+                'name'                  => 'setup_videos_2_single',
+                'title'                 => __('Videos 2 - Single'),
+                'render_template'       => $this->setup_plugin_dir_path().'templates/blocks/block-videos-vbs.php',
                 'category'              => 'setup',
                 'icon'                  => 'video-alt3',
                 'mode'                  => 'edit',
@@ -152,10 +152,26 @@ class SetupVideoACF extends SetupVideoStructure {
                 ],
             ),
 
-            'setup_videos_2_inout' => array(
-                'name'                  => 'setup_videos_2_inout',
-                'title'                 => __('Videos 2.0 IO'),
-                'render_template'       => $this->setup_plugin_dir_path().'templates/blocks/block-videos-io.php',
+            'setup_videos_2_multi' => array(
+                'name'                  => 'setup_videos_2_multi',
+                'title'                 => __('Videos 2 - Multi'),
+                'render_template'       => $this->setup_plugin_dir_path().'templates/blocks/block-videos-vbm.php',
+                'category'              => 'setup',
+                'icon'                  => 'video-alt3',
+                'mode'                  => 'edit',
+                'keywords'              => array( 'video', 'videos' ),
+                'supports'              => [
+                    'align'             => false,
+                    'anchor'            => true,
+                    'customClassName'   => true,
+                    'jsx'               => true,
+                ],
+            ),
+
+            'setup_videos_2_pull' => array(
+                'name'                  => 'setup_videos_2_pull',
+                'title'                 => __('Videos 2 - Pull'),
+                'render_template'       => $this->setup_plugin_dir_path().'templates/blocks/block-videos-pull.php',
                 'category'              => 'setup',
                 'icon'                  => 'video-alt3',
                 'mode'                  => 'edit',
