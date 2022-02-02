@@ -3,6 +3,47 @@
 	cursor: pointer;
 }
 
+.item-video {
+	position: relative;
+}
+
+.item-video img.item-thumbnail-img {}
+
+.item-video .item-video-button {}
+.item-video button.item-video-button {}
+
+.item-video .item-play-icon {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 68px;
+	height: 48px;
+	margin-left: -34px;
+	margin-top: -24px;
+}
+
+.item-video button.item-video-button {
+	background: #000;
+	padding: 0;
+	display: flex;
+}
+.item-video button.item-video-button:hover {
+	background: #333;
+}
+
+.item-video button.item-video-button .play-icon-tv {
+	-webkit-transition: fill .1s cubic-bezier(0.4,0,1,1),fill-opacity .1s cubic-bezier(0.4,0,1,1);
+	transition: fill .1s cubic-bezier(0.4,0,1,1),fill-opacity .1s cubic-bezier(0.4,0,1,1);
+	fill: #212121;
+	fill-opacity: .8;
+}
+.item-video button.item-video-button:hover .play-icon-tv {
+	-webkit-transition: fill .1s cubic-bezier(0,0,0.2,1),fill-opacity .1s cubic-bezier(0,0,0.2,1);
+	transition: fill .1s cubic-bezier(0,0,0.2,1),fill-opacity .1s cubic-bezier(0,0,0.2,1);
+	fill: #f00;
+	fill-opacity: 1;
+}
+
 .embed-container { 
 	position: relative; 
 	padding-bottom: 56.25%;
