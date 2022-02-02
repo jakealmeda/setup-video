@@ -1,4 +1,5 @@
-.item-thumbnail {
+.item-video,
+.item-play {
 	cursor: pointer;
 }
 
