@@ -36,8 +36,8 @@ echo '<div class="item-videoentry box-fbfloat'.$cont_class.'"'.$inline_style.'>'
 			
 			// clickable thumbnail
 
-			$use_this_thumb = wp_get_attachment_image( $thumbnail, $arr->setup_array_validation( 'def_thumb_size', $vars ) );
-
+			$use_this_thumb = wp_get_attachment_image( $thumbnail, $arr->setup_array_validation( 'def_thumb_size', $vars ), false, array( 'class' => 'item-thumbnail-img' ) );
+			
 			?>
 			<div class="item-video" id="vthumbs__<?php echo $vars[ "counts" ]; ?>">
 				<button class="ytp-large-play-button ytp-button item-play" aria-label="Play">
