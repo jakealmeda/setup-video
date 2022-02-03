@@ -1,48 +1,83 @@
-.item-video,
-.item-play {
-	cursor: pointer;
-}
+/*
+ Default styles for video entries
+ */
+
+.item-videoentry {}
 
 .item-video {
 	position: relative;
+	cursor: pointer;
 }
+	.item-video img.item-thumbnail-img {}
 
-.item-video img.item-thumbnail-img {}
+	.item-video .item-play-icon {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		width: 68px;
+		height: 48px;
+		margin-left: -34px;
+		margin-top: -24px;
+	}
 
-.item-video .item-video-button {}
-.item-video button.item-video-button {}
+	.item-video button.item-video-button {
+		background: #000;
+		padding: 0;
+		display: flex;
+		cursor: pointer;
+	}
+	.item-video button.item-video-button:hover {
+		background: #333;
+	}
 
-.item-video .item-play-icon {
-	position: absolute;
-	left: 50%;
-	top: 50%;
-	width: 68px;
-	height: 48px;
-	margin-left: -34px;
-	margin-top: -24px;
-}
+	.item-video button.item-video-button .play-icon-tv {
+		-webkit-transition: fill .1s cubic-bezier(0.4,0,1,1),fill-opacity .1s cubic-bezier(0.4,0,1,1);
+		transition: fill .1s cubic-bezier(0.4,0,1,1),fill-opacity .1s cubic-bezier(0.4,0,1,1);
+		fill: #212121;
+		fill-opacity: .8;
+	}
+	.item-video button.item-video-button:hover .play-icon-tv {
+		-webkit-transition: fill .1s cubic-bezier(0,0,0.2,1),fill-opacity .1s cubic-bezier(0,0,0.2,1);
+		transition: fill .1s cubic-bezier(0,0,0.2,1),fill-opacity .1s cubic-bezier(0,0,0.2,1);
+		fill: #f00;
+		fill-opacity: 1;
+	}
 
-.item-video button.item-video-button {
-	background: #000;
-	padding: 0;
-	display: flex;
-}
-.item-video button.item-video-button:hover {
-	background: #333;
-}
+/*
+set-fbfloat - makes the existing video look like facebook entries
+ */
 
-.item-video button.item-video-button .play-icon-tv {
-	-webkit-transition: fill .1s cubic-bezier(0.4,0,1,1),fill-opacity .1s cubic-bezier(0.4,0,1,1);
-	transition: fill .1s cubic-bezier(0.4,0,1,1),fill-opacity .1s cubic-bezier(0.4,0,1,1);
-	fill: #212121;
-	fill-opacity: .8;
+.set-fbfloat {
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+	padding: 0.5rem 0;
+	background-color: #fff;
+	border-radius: 0.5rem;
+	max-width: 640px;
+	margin-left: auto;
+	margin-right: auto;
 }
-.item-video button.item-video-button:hover .play-icon-tv {
-	-webkit-transition: fill .1s cubic-bezier(0,0,0.2,1),fill-opacity .1s cubic-bezier(0,0,0.2,1);
-	transition: fill .1s cubic-bezier(0,0,0.2,1),fill-opacity .1s cubic-bezier(0,0,0.2,1);
-	fill: #f00;
-	fill-opacity: 1;
-}
+	.set-fbfloat .item-title {
+		margin: 0 1rem 0.5rem;
+	}
+	.set-fbfloat .item-summary {
+		margin: 0.5rem 1rem 0;
+	}
+	.set-fbfloat .item-summary p {
+		margin-bottom: 0.5rem;
+	}
+	.set-fbfloat .item-summary p:last-child {
+		margin-bottom: 0;
+	}
+	.set-fbfloat .item-credit {
+		margin: 0.5rem 1rem 0;	
+	}
+	.set-fbfloat .item-video {
+		position: relative;
+	}
+
+/*
+Not sure what this is
+ */
 
 .embed-container { 
 	position: relative; 
