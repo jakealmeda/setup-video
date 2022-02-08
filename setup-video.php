@@ -1,8 +1,8 @@
 <?php
 /**
- * Plugin Name: Setup Video 2.0
- * Description: Utilize ACF's custom fields to handle videos.
- * Version: 2.0
+ * Plugin Name: Setup Video
+ * Description: Plugin that allows video blocks and video custom post type templating
+ * Version: 2.0.0
  * Author: Jake Almeda
  * Author URI: http://smarterwebpackages.com/
  * Network: true

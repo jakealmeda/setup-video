@@ -138,7 +138,7 @@ class SetupVideoACF extends SetupVideoStructure {
 
             'setup_videos_2_single' => array(
                 'name'                  => 'setup_videos_2_single',
-                'title'                 => __('Videos 2 - Single'),
+                'title'                 => __('Videos - Single'),
                 'render_template'       => $this->setup_plugin_dir_path().'templates/blocks/block-videos-vbs.php',
                 'category'              => 'setup',
                 'icon'                  => 'video-alt3',
@@ -154,7 +154,7 @@ class SetupVideoACF extends SetupVideoStructure {
 
             'setup_videos_2_multi' => array(
                 'name'                  => 'setup_videos_2_multi',
-                'title'                 => __('Videos 2 - Multi'),
+                'title'                 => __('Videos - Multiple'),
                 'render_template'       => $this->setup_plugin_dir_path().'templates/blocks/block-videos-vbm.php',
                 'category'              => 'setup',
                 'icon'                  => 'video-alt3',
@@ -170,7 +170,7 @@ class SetupVideoACF extends SetupVideoStructure {
 
             'setup_videos_2_pull' => array(
                 'name'                  => 'setup_videos_2_pull',
-                'title'                 => __('Videos 2 - Pull'),
+                'title'                 => __('Videos - Pull'),
                 'render_template'       => $this->setup_plugin_dir_path().'templates/blocks/block-videos-pull.php',
                 'category'              => 'setup',
                 'icon'                  => 'video-alt3',
