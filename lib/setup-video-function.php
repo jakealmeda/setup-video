@@ -26,6 +26,8 @@ class SetupVideoFunc {
 
         // set input type for individual entries
         $vars[ 'input_type' ] = $vid_struc->input_type;
+        // pass which group
+        $vars[ 'acf_group' ] = $acf_group;
 
         $echo_this = '';
 

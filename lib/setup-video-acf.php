@@ -203,10 +203,11 @@ class SetupVideoACF extends SetupVideoStructure {
      */
     public function __construct() {
 
-        add_filter( 'acf/load_field/name=video-template-global', array( $this, 'acf_setup_video_entry_template' ) );
         add_filter( 'acf/load_field/name=video-template', array( $this, 'acf_setup_video_entry_template' ) );
-        add_filter( 'acf/load_field/name=video-template-global-io', array( $this, 'acf_setup_video_entry_template' ) );
-        add_filter( 'acf/load_field/name=video-template-io', array( $this, 'acf_setup_video_entry_template' ) );
+        add_filter( 'acf/load_field/name=video-template-global', array( $this, 'acf_setup_video_entry_template' ) );
+        add_filter( 'acf/load_field/name=video-template-vbs', array( $this, 'acf_setup_video_entry_template' ) );
+        add_filter( 'acf/load_field/name=video-template-global-vbm', array( $this, 'acf_setup_video_entry_template' ) );
+        add_filter( 'acf/load_field/name=video-template-vbm', array( $this, 'acf_setup_video_entry_template' ) );
 
         // thumbnail sizes
         //add_filter( 'acf/load_field/name=video-thumb-size', array( $this, 'acf_setup_image_sizes' ) );
