@@ -25,32 +25,28 @@ echo '<div class="item-videoentry set-linktype'.$cont_class.'"'.$inline_style.'>
 
 	/*
 	Default link (w title)
-	Video: [oembed url]Title[/oembed]
 	Video: [manual url]Title[/manual]
+	Video: [oembed url]Title[/oembed]
 	*/
 
-	$acf_group = $arr->setup_array_validation( 'acf_group', $vars );
-
-	// FOR OEMBED
-	$title = $arr->setup_array_validation( 'title', $vars );
-	if( !empty( $title ) ) :
-
-		// Video: [oembed url]Title[/oembed]
-		$oembed = $arr->setup_array_validation( 'oembed', $vars );
-		if( !empty( $oembed ) ) {
-
-			// get raw URL from oEmbed
-			$oembed_url = get_field( 'video-oembeds'.$acf_group, false, false);
-			echo '<div class="item-title textsize-xl"><a href="'.$oembed_url.'" target="_blank">'.$title.'</a></div>';
-		}
-
-		// Video: [manual url]Title[/manual]
-		$video_url = $arr->setup_array_validation( 'video_url', $vars );
+	$video_url = $arr->setup_array_validation( 'video_url', $vars );
+	$oembed = $arr->setup_array_validation( 'oembed', $vars );
+	if( empty( $video_url ) ) {
+		// get raw URL from oEmbed
+		$vurl = get_field( 'video-oembeds'.$arr->setup_array_validation( 'acf_group', $vars ), FALSE, FALSE );
+	} else {
+		// prioritize manual (video) URL
 		if( !empty( $video_url ) ) {
-			echo '<div class="item-title textsize-xl"><a href="'.$video_url.'" target="_blank">'.$title.'</a></div>';
+			$vurl = $video_url;
 		}
-		
-	endif;	
+	}
+
+	$title = $arr->setup_array_validation( 'title', $vars );
+	if( !empty( $title ) ) {
+		echo '<div class="item-title textsize-xl"><a href="'.$vurl.'" target="_blank">'.$title.'</a></div>';
+	} else {
+		echo '<div class="item-title textsize-xl"><a href="'.$vurl.'" target="_blank">'.$vurl.'</a></div>';
+	}
 
 
 	echo '<input type="'.$arr->setup_array_validation( 'input_type', $vars ).'" id="vtype__'.$vars[ 'counts' ].'" value="youtube" />';
