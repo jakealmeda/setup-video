@@ -43,9 +43,9 @@ echo '<div class="item-videoentry set-linktype'.$cont_class.'"'.$inline_style.'>
 
 	$title = $arr->setup_array_validation( 'title', $vars );
 	if( !empty( $title ) ) {
-		echo '<div class="item-title textsize-xl"><a href="'.$vurl.'" target="_blank">'.$title.'</a></div>';
+		echo '<div class="item-icon"></div><div class="item-title"><a class="item-link" href="'.$vurl.'" target="_blank">'.$title.'</a></div>';
 	} else {
-		echo '<div class="item-title textsize-xl"><a href="'.$vurl.'" target="_blank">'.$vurl.'</a></div>';
+		echo '<div class="item-icon"></div><div class="item-title"><a class="item-link href="'.$vurl.'" target="_blank">'.$vurl.'</a></div>';
 	}
 
 

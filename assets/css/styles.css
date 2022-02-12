@@ -76,6 +76,38 @@ set-fbfloat - makes the existing video look like facebook entries
 	}
 
 /*
+set-linktype - displaying videos into links
+ */
+
+.set-linktype {}
+	.set-linktype .item-title {}
+	.set-linktype .item-summary {}
+	.set-linktype .item-summary p {}
+	.set-linktype .item-summary p:last-child {
+		margin-bottom: 0;
+	}
+	.set-linktype .item-credit {}
+	.set-linktype .item-video {}
+	
+	.set-linktype.item-videoentry {
+		display: grid;
+		grid-template-columns: auto 1fr;
+		grid-column-gap: 0.5rem;
+		align-items: center;
+	}
+	.set-linktype.item-videoentry .item-icon {
+		width: 15px;
+		height: 15px;
+		background-size: contain;
+	}
+	.set-linktype.item-videoentry .item-icon {
+		background-image: url("/wp-content/plugins/setup-video/assets/icons/video.svg");
+		background-repeat: no-repeat;
+		background-size: 15px;
+	}
+
+
+/*
 Not sure what this is
  */
 

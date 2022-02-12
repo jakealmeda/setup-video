@@ -90,7 +90,7 @@ class SetupVideojQuery {
     public function setup_enqueue_scripts() {
 
         // enqueue styles
-        wp_enqueue_style( 'setup_video_2_0_block_style', plugins_url( 'css/styles.css', __FILE__ ) );
+        wp_enqueue_style( 'setup_video_2_0_block_style', plugins_url( 'assets/css/styles.css', __FILE__ ) );
 
         // last arg is true - will be placed before </body>
         wp_register_script( 'setup_video_2_0_scripts', plugins_url( 'js/asset.js', __FILE__ ), NULL, '1.0', TRUE );
