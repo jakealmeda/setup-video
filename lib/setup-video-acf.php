@@ -67,14 +67,14 @@ class SetupVideoACF extends SetupVideoStructure {
 
 
     /**
-     * Function to pass directory where templates can be found (VIDEO HEADER)
+     * Function to pass directory where templates can be found (TIME ENTRY)
      *
      */
-    /*public function acf_setup_video_header_template( $field ) {
+    public function acf_setup_video_time_template( $field ) {
 
-        return $this->acf_setup_load_view_html_template_choices( $field, 'video-header' );
+        return $this->acf_setup_load_view_html_template_choices( $field, 'video-timestamp' );
 
-    }*/
+    }
 
 
     /**
@@ -208,6 +208,9 @@ class SetupVideoACF extends SetupVideoStructure {
         add_filter( 'acf/load_field/name=video-template-vbs', array( $this, 'acf_setup_video_entry_template' ) );
         add_filter( 'acf/load_field/name=video-template-global-vbm', array( $this, 'acf_setup_video_entry_template' ) );
         add_filter( 'acf/load_field/name=video-template-vbm', array( $this, 'acf_setup_video_entry_template' ) );
+
+        add_filter( 'acf/load_field/name=video-time-templates-vbs', array( $this, 'acf_setup_video_time_template' ) );
+        add_filter( 'acf/load_field/name=video-time-template-vbs', array( $this, 'acf_setup_video_time_template' ) );
 
         // thumbnail sizes
         //add_filter( 'acf/load_field/name=video-thumb-size', array( $this, 'acf_setup_image_sizes' ) );

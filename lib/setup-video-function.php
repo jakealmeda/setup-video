@@ -18,11 +18,12 @@ class SetupVideoFunc {
     /**
      * Main function
      */
-    public function setup_video_acf( $acf_group = FALSE ) {
+    public function setup_video_acf( $acf_group = FALSE )  {
 
-        global $vars, $gcounter;
+        global $vars, $gcounter, $timers;
 
         $vid_struc = new SetupVideoStructure();
+        $vid_extn = new SetupVideoFuncExtension();
 
         // set input type for individual entries
         $vars[ 'input_type' ] = $vid_struc->input_type;
@@ -40,6 +41,10 @@ class SetupVideoFunc {
             
             if( get_field( 'video-exclude'.$acf_group ) === FALSE ) {
                 
+                // get start time
+                $vid_start = get_field( 'video-start'.$acf_group );
+
+                // oembed
                 $oembeds_io = get_field( 'video-oembeds'.$acf_group );
                 if( !empty( $oembeds_io ) ) {
                     $vars[ 'oembed' ] = $oembeds_io;
@@ -49,8 +54,15 @@ class SetupVideoFunc {
                     $vars[ 'video_id' ] = '';
                 }
 
+                // video (manual) url
+                $vid_url = get_field( 'video-url'.$acf_group );
+                if( !empty( $vid_url ) ) {
+                    $vars[ 'video_url' ] = $vid_url;
+                } else {
+                    $vars[ 'video_url' ] = '';
+                }
+
                 $vars[ 'thumbnail' ] = get_field( 'video-thumbnail'.$acf_group );
-                $vars[ 'video_url' ] = get_field( 'video-url'.$acf_group );
                 $vars[ 'title' ] = get_field( 'video-title'.$acf_group );
                 $vars[ 'credits' ] = get_field( 'video-credit'.$acf_group );
                 $vars[ 'summary' ] = get_field( 'video-summary'.$acf_group );
@@ -58,12 +70,47 @@ class SetupVideoFunc {
                 $vars[ 'video_wrap_sty' ] = get_field( 'video-section-style'.$acf_group );
 
                 // video counter
-                //$this->vid_counter++;
-                //$vars[ 'counts' ] = $this->vid_counter; // templates use this variable
                 $gcounter++;
                 $vars[ 'counts' ] = $gcounter;
 
                 $echo_this .= $this->setup_pull_view_template( get_field( 'video-template'.$acf_group ), 'video-entry' );
+
+                // TIMESTAMP
+                // -------------------
+                $oembeds_url = get_field( 'video-oembeds'.$acf_group, FALSE, FALSE );
+                if( empty( $oembeds_url ) ) {
+                    $oembeds_url = $vid_url;
+                }
+
+                // global template - timestamp
+                $time_template_g = get_field( 'video-time-templates'.$acf_group );
+                
+                // timestamp entries
+                $time_entries = get_field( 'video-timestamps'.$acf_group );
+                if( is_array( $time_entries ) && count($time_entries) >= 1 ) {
+
+                    $x = '';
+
+                    foreach( $time_entries as $times ) {
+
+                        $timers[ 'title' ] = $times[ 'video-time-title'.$acf_group ];
+                        $timers[ 'summary' ] = $times[ 'video-time-summary'.$acf_group ];
+                        $timers[ 'start' ] = $vid_extn->setup_insert_timers( $oembeds_url, $times[ 'video-time-start'.$acf_group ] );
+                        $timers[ 'end' ] = $vid_extn->setup_insert_timers( $oembeds_url, $times[ 'video-time-end'.$acf_group ] );
+                        
+                        // template
+                        if( $times[ 'video-time-otemplate'.$acf_group ] === TRUE ) {
+                            // override
+                            $x .= $this->setup_pull_view_template( $times[ 'video-time-template'.$acf_group ], 'video-timestamp' );
+                        } else {
+                            $x .= $this->setup_pull_view_template( $time_template_g, 'video-timestamp' );
+                        }
+
+                    }
+
+                    $echo_this .= $x;
+
+                }
 
             }
 
@@ -336,7 +383,7 @@ class SetupVideoFunc {
     /**
      * WP Native Global Embed code
      */
-    private function setup_embed_sc( $vid ) {
+    public function setup_embed_sc( $vid ) {
 
         $main_class = new SetupVideoStructure();
         $mc = $main_class->setup_video_size();

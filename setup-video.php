@@ -135,6 +135,7 @@ class SetupVideojQuery {
 
 // INCLUDE FUNCTION FILE
 include_once( 'lib/setup-video-acf.php' );
+include_once( 'lib/setup-video-function-ext.php' );
 include_once( 'lib/setup-video-function.php' );
 
 
