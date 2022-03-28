@@ -211,6 +211,8 @@ class SetupVideoACF extends SetupVideoStructure {
 
         add_filter( 'acf/load_field/name=video-time-templates-vbs', array( $this, 'acf_setup_video_time_template' ) );
         add_filter( 'acf/load_field/name=video-time-template-vbs', array( $this, 'acf_setup_video_time_template' ) );
+        add_filter( 'acf/load_field/name=video-time-templates-vbm', array( $this, 'acf_setup_video_time_template' ) );
+        add_filter( 'acf/load_field/name=video-time-template-vbm', array( $this, 'acf_setup_video_time_template' ) );
 
         // thumbnail sizes
         //add_filter( 'acf/load_field/name=video-thumb-size', array( $this, 'acf_setup_image_sizes' ) );
